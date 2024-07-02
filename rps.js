@@ -14,44 +14,36 @@ function getComputerChoice(){
     }
 }
 
-
-
-function playRound(playerSelection, computerSelection){
-    
+function playRound(playerSelection){
+    computerSelection = getComputerChoice();
     if ((playerSelection === "rock") && (computerSelection === "paper")) {
-        return ["You Lose! Paper beats Rock",0];
-    }if ((playerSelection === "paper") && (computerSelection === "scissors")){
-        return ["You Lose! Scissors beats Paper",0];
-    }if ((playerSelection === "rock") && (computerSelection === "paper")){
-        return ["You Lose! Paper beats Rock",0];
-    }if (playerSelection === computerSelection){
-        return ["Draw!",1]
+        return [0,"You Lose! Paper beats Rock"]; 
+    }else if ((playerSelection === "paper") && (computerSelection === "scissors")){
+        return [0,"You Lose! Scissors beats Paper"]
+    }else if ((playerSelection === "rock") && (computerSelection === "paper")){
+        return [1,"You Lose! Paper beats Rock"]
+    }else if (playerSelection === computerSelection){
+        return [0,"Draw"]
     }else {
-        return [`You Win! ${playerSelection[0].toUpperCase() + playerSelection.substr(1)} beats ${computerSelection[0].toUpperCase() + computerSelection.substr(1)}`,2]
+        return [1,"You Win!"]
     }
 }
 
+window.onload=function(){
+    const buttons = document.querySelectorAll("button"); 
 
+    buttons.forEach((button) => {
+        button.addEventListener("click", (e) => {
+            [resultNum, resultStr] = playRound(e.target.id)
 
-function game(){
-    let counter = 0;
-    for (let i = 0; i < 5; i ++){
-        let playerSelection = prompt("Choose Rock, Paper or Scissors!");
-        playerSelection = playerSelection.toLowerCase().trim()
-        while ((playerSelection != "rock") && (playerSelection != "scissors") && (playerSelection != "paper")){
-            playerSelection = prompt("Either Rock, Paper or Scissors ")
-        }
-        let result = (playRound(playerSelection, getComputerChoice()))
-        console.log(result[0])
-        if (result[1] ===2){
-            counter ++ 
-        }
-    }
-    if (counter >= 3){
-        return "You win !!!"
-    }else{
-        return "You Lose, better luck next time !!!"
-    }
+            const score = document.querySelector(".score")
+            const prevScore = parseInt(score.textContent)
+            resultNum = parseInt(resultNum)
+            score.textContent = (prevScore + resultNum)
+            
+            const result = document.querySelector(".result")
+            result.textContent = resultStr
+
+        }); 
+    });
 }
-
-console.log(game())
